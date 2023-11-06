@@ -71,7 +71,11 @@ class SuggestionController extends Controller
                 $extraBalls[$color] = $count;
             }
         }
-
+        // Clear suggested buckets to the database
+            SuggestedBucket::truncate();
+       // Clear extra balls to the database
+            ExtraBall::truncate();
+       
         // Save suggested buckets to the database
         foreach ($suggestedBuckets as $bucketName => $bucketContents) {
             foreach ($bucketContents as $color => $count) {
@@ -91,6 +95,6 @@ class SuggestionController extends Controller
             ]);
         }
 
-        return view('suggestions.result', compact('suggestedBuckets', 'extraBalls'));
+        return view('suggestions.index', compact('suggestedBuckets', 'extraBalls'));
     }
 }
