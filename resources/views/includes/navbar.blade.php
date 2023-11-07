@@ -13,6 +13,9 @@
                         <a class="nav-link active" aria-current="page" href="{{ route('bucket.index') }}">Buckets</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{ route('color.index') }}">Ball Color</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{{ route('ball.index') }}">Ball</a>
                     </li>
                     <li class="nav-item">

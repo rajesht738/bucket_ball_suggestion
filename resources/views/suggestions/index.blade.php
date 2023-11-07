@@ -8,37 +8,20 @@
     <h3>Bucket Suggestion</h3>
     <form method="POST" action="{{ route('suggestion.suggest-buckets') }}">
         @csrf
-        <div class="form-group row">
-            <label for="pink_balls" class="col-sm-2 col-form-label">Pink</label>
-            <div class="col-sm-5">
-            <input type="number" name="pink_balls" value="{{old('pink_balls')}}" id="pink_balls" class="form-control" required>
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="red_balls" class="col-sm-2 col-form-label bg-red" >Red</label>
-            <div class="col-sm-5">
-            <input type="number" name="red_balls" value="{{old('red_balls')}}" id="red_balls" class="form-control" required>
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="blue_balls" class="col-sm-2 col-form-label">Blue</label>
-            <div class="col-sm-5">
-            <input type="number" name="blue_balls" id="blue_balls" value="{{old('blue_balls')}}" class="form-control" required>
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="orange_balls" class="col-sm-2 col-form-label">Orange</label>
-            <div class="col-sm-5">
-            <input type="number" name="orange_balls" id="orange_balls" value="{{old('orange_balls')}}" class="form-control" required>
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="green_balls" class="col-sm-2 col-form-label">Green</label>
-            <div class="col-sm-5">
-            <input type="number" name="green_balls" id="green_balls"  value="{{old('green_balls')}}" class="form-control" required>
-            </div>
-        </div>
        
+        @foreach ($balls as $ball )
+            
+       
+        <div class="form-group row">
+            <input type="hidden" name="balls_id[]" value="{{$ball->id}}" id="balls_id" class="form-control">
+            <input type="hidden" name="balls_colors[]" value="{{$ball->color->color_name}}" id="balls_id" class="form-control">
+            <label for="balls_count" class="col-sm-2 col-form-label">{{$ball->color->color_name}}</label>
+            
+            <div class="col-sm-5">
+            <input type="number" name="balls_count[]" value="{{old('balls_count')}}" id="balls_count" class="form-control" required>
+            </div>
+        </div>
+        @endforeach
         <button type="submit" class="btn btn-success m-2">PLACE BALLS IN BUCKET</button>
     </form>
     </div>

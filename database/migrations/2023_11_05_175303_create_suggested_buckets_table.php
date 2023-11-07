@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('suggested_buckets', function (Blueprint $table) {
             $table->id();
-            $table->string('bucket_name');
-            $table->string('color');
+            $table->unsignedBigInteger('bucket_id');
+            $table->unsignedBigInteger('ball_id');
+            $table->foreign('bucket_id')->references('id')->on('buckets');
+            $table->foreign('ball_id')->references('id')->on('balls');           
             $table->integer('count');
             $table->timestamps();
         });

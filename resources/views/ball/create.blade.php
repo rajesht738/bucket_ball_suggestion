@@ -15,11 +15,20 @@
                     <form class="row g-3" method="POST" action="{{ route('ball.store') }}"
                         enctype="multipart/form-data">
                         @csrf
+                        
                         <div class="col-md-6">
-                            <label for="ball_name" class="form-label">Ball Name</label>
-                            <input type="text" name="ball_name" value="{{old('ball_name')}}" class="form-control" id="ball_name">
-                           @if ($errors->has('ball_name'))
-                               <span class="text-danger">{{$errors->first('ball_name')}}</span>
+                            <label for="color_id" class="form-label">Ball Color</label>
+                         
+                            <select class="form-control" name="color_id" id="color_id">
+                                <option value="">Select Ball Color</option>
+                                @foreach ($colors as $color)
+                                   <option value="{{$color->id}}">{{$color->color_name}}</option>
+                                @endforeach
+                             
+                              </select>
+                           
+                           @if ($errors->has('color_id'))
+                               <span class="text-danger">{{$errors->first('color_id')}}</span>
                            @endif
                         </div>
                         <div class="col-md-6">

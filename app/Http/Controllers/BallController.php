@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ball;
+use App\Models\Color;
 use Illuminate\Http\Request;
 
 class BallController extends Controller
@@ -12,8 +13,8 @@ class BallController extends Controller
      */
     public function index()
     {
-        $balls = Ball::all();
-        //  dd($students);
+        $balls = Ball::with('color')->get();
+        //   dd($balls->toArray());
         return view('ball.index', ['balls' => $balls]);
     }
 
@@ -22,7 +23,8 @@ class BallController extends Controller
      */
     public function create()
     {
-        return view('ball.create');
+        $colors = Color::all();
+        return view('ball.create' , ['colors' => $colors]);
     }
 
     /**
@@ -30,14 +32,17 @@ class BallController extends Controller
      */
     public function store(Request $request)
     {
+       
         $request->validate([
-            'ball_name' => 'required',
+            'color_id' => 'required',
+            
             'ball_volume' => 'required',
           ]);
 
-        // dd($request->toArray());
+        //  dd($request->toArray());
         $ball = new Ball();
-        $ball->ball_name = $request->ball_name;
+        $ball->color_id = $request->color_id;
+       
         $ball->ball_volume = $request->ball_volume;
         $ball->save();
         return back()->with('success', 'Ball Added Successfully');
@@ -68,12 +73,13 @@ class BallController extends Controller
     {
          // dd($id);
          $request->validate([
-            'ball_name' => 'required',
+            'color_id' => 'required',
             'ball_volume' => 'required',
           ]);
         $ball = Ball::where('id', $id)->first();
      
-        $ball->ball_name = $request->ball_name;
+        $ball->color_id = $request->color_id;
+
         $ball->ball_volume = $request->ball_volume;
         $ball->save();
         return back()->with('success', 'Ball Updated Successfully!!!');

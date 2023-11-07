@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BallController;
 use App\Http\Controllers\BucketController;
+use App\Http\Controllers\ColorController;
 use App\Http\Controllers\SuggestionController;
 use Illuminate\Support\Facades\Route;
 
@@ -23,6 +24,14 @@ Route::post('/bucket/store', [BucketController::class, 'store'])->name('bucket.s
 Route::get('/bucket/{id}', [BucketController::class, 'edit'])->name('bucket.edit');
 Route::put('/bucket/{id}', [BucketController::class, 'update'])->name('bucket.update');
 Route::delete('/bucket/{id}/delete', [BucketController::class, 'destroy'])->name('bucket.destroy');
+
+// ball Color creation routes
+Route::get('/color', [ColorController::class, 'index'])->name('color.index');
+Route::get('/color/create', [ColorController::class, 'create'])->name('color.create');
+Route::post('/color/store', [ColorController::class, 'store'])->name('color.store');
+Route::get('/color/{id}', [ColorController::class, 'edit'])->name('color.edit');
+Route::put('/color/{id}', [ColorController::class, 'update'])->name('color.update');
+Route::delete('/color/{id}/delete', [ColorController::class, 'destroy'])->name('color.destroy');
 
 // ball creation routes
 Route::get('/ball', [BallController::class, 'index'])->name('ball.index');

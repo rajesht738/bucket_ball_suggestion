@@ -3,8 +3,8 @@
 @section('main')
 <div class="container">
         <h1>Ball List</h1>
-        <div class="col-md-12 d-flex justify-content-center"><a href={{ route('ball.create') }}
-                class="btn btn-primary">Create Ball</a>
+        <div class="col-md-12 d-flex justify-content-center"><a href={{ route('color.create') }}
+                class="btn btn-primary">Create Ball Color</a>
             </div>
 
 <div class="row justify-content-center">
@@ -15,23 +15,20 @@
 
                 <th>#</th>
                 <th>Ball Name</th>
-                <th>Ball Volume(In inches)</th>
                 <th>Actions</th>
 
             </tr>
         </thead>
         <tbody>
-            @foreach ($balls as $ball )
+            @foreach ($colors as $color )
             <tr>
                 <td>{{$loop->index + 1}}</td>
                
-                <td><a href="/ball/{{$ball->id}}/details">{{$ball->color->color_name}}</a></td>
-                <td>{{$ball->ball_volume}}</td>
-                
-                <td>
-                    <div class="d-inline-block"><a href="/ball/{{$ball->id}}" class="btn btn-primary">Edit</a></div>
+                <td><a href="/color/{{$color->id}}/details">{{$color->color_name}}</a></td>
+                 <td>
+                    <div class="d-inline-block"><a href="/color/{{$color->id}}" class="btn btn-primary">Edit</a></div>
                     <div class="d-inline-block">
-                        <form  action="/ball/{{$ball->id}}/delete" method="Post">
+                        <form  action="/color/{{$color->id}}/delete" method="Post">
                             @csrf
                             @method('DELETE')
                             <div class="col-12 justify-content-center">

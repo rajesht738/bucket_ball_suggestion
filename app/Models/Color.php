@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Bucket extends Model
+class Color extends Model
 {
     use HasFactory;
-    public function balls(){
-        return $this->hasMany(Ball::class);
+    public function ball(){
+        return $this->hasOne(Ball::class);
     }
-
+   
 }

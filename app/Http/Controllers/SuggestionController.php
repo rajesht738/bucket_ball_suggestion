@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Ball;
 use App\Models\Bucket;
+use App\Models\Color;
 use App\Models\ExtraBall;
 use App\Models\SuggestedBucket;
 use Illuminate\Http\Request;
@@ -16,21 +17,26 @@ class SuggestionController extends Controller
     public function index()
     {
         $buckets = Bucket::all();
-        $balls = Ball::all();
-        return view('suggestions.index', compact('buckets', 'balls'));
+        $balls = Ball::with(['color'])->get();
+        $res = SuggestedBucket::with(['ball', 'bucket'])->get();
+       
+        // dd($res->toArray());
+        return view('suggestions.index', compact('buckets', 'res', 'balls'));
     }
     public function suggestBuckets(Request $request)
     {
-
+        // dd($request->toArray());
         // Retrieve the input data
-        $ballCounts = [
-            'Pink' => $request->input('pink_balls'),
-            'Red' => $request->input('red_balls'),
-            'Blue' => $request->input('blue_balls'),
-            'Orange' => $request->input('orange_balls'),
-            'Green' => $request->input('green_balls'),
-            // Add more colors and counts as needed
-        ];
+        $ballCounts = [];
+        $counts = $request->input('balls_count');
+        $ball_ids = $request->input('balls_id');
+
+
+        // Process and save the data
+        foreach ($counts as $index => $color) {
+            $ball_id = $ball_ids[$index];
+            $ballCounts[$ball_id] = $color;
+        }
 
         // Retrieve the list of buckets from the database
         $buckets = Bucket::all();
@@ -44,15 +50,16 @@ class SuggestionController extends Controller
 
         // Iterate through the buckets to allocate balls
         foreach ($buckets as $bucket) {
-            $bucketName = $bucket->bucket_name;
+            $bucketName = $bucket->id;
             $Bucketcapacity = $bucket->bucket_volume;
 
             $suggestedBuckets[$bucketName] = [];
 
             // Iterate through the ball colors to allocate balls to the current bucket
             foreach ($remainingBalls as $color => $count) {
+
                 // Retrieve the size of the ball from the database
-                $ballSize = Ball::where('ball_name', $color)->first()->ball_volume;
+                $ballSize = Ball::where('color_id', $color)->first()->ball_volume;
 
                 $ballsToAdd = min($count, floor($Bucketcapacity / $ballSize));
 
@@ -72,21 +79,20 @@ class SuggestionController extends Controller
             }
         }
         // Clear suggested buckets to the database
-            SuggestedBucket::truncate();
-       // Clear extra balls to the database
-            ExtraBall::truncate();
-       
+        SuggestedBucket::truncate();
+        // Clear extra balls to the database
+        ExtraBall::truncate();
+
         // Save suggested buckets to the database
         foreach ($suggestedBuckets as $bucketName => $bucketContents) {
             foreach ($bucketContents as $color => $count) {
                 SuggestedBucket::create([
-                    'bucket_name' => $bucketName,
-                    'color' => $color,
+                    'bucket_id' => $bucketName,
+                    'ball_id' => $color,
                     'count' => $count,
                 ]);
             }
         }
-
         // Save extra balls to the database
         foreach ($extraBalls as $color => $count) {
             ExtraBall::create([
@@ -94,7 +100,24 @@ class SuggestionController extends Controller
                 'count' => $count,
             ]);
         }
+        $data = [];
+        foreach ($suggestedBuckets as $key => $value) {
+            foreach ($value as $key2 => $value2) {
+                $data[$key2] = $value2;
+            }
+        }
+        // $sug = [];
+        // foreach ($suggestedBuckets as $bucketName => $bucketContents){
+        //     foreach ($bucketContents as $color => $count){
+        //     $color = Color::select('color_name')->where('id', $color)->first();
+        //     $bucket = Bucket::select('bucket_name')->where('id', $bucketName)->first();
+        //     // echo $bucket;
+        //     $sug[$bucketName] = ['color'=> $color, 'count' => $count ];
+        //      }
 
-        return view('suggestions.index', compact('suggestedBuckets', 'extraBalls'));
+        // }
+        // dd($sug);
+
+        return view('suggestions.result', compact('suggestedBuckets', 'extraBalls'));
     }
 }
