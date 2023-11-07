@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('balls', function (Blueprint $table) {
             $table->id();
-            
+            $table->string('color_name');
             $table->unsignedBigInteger('color_id');
             $table->foreign('color_id')->references('id')->on('colors');
             $table->double('ball_volume', 8, 2);

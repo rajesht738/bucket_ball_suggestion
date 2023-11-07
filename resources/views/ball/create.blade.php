@@ -18,7 +18,7 @@
                         
                         <div class="col-md-6">
                             <label for="color_id" class="form-label">Ball Color</label>
-                         
+                          
                             <select class="form-control" name="color_id" id="color_id">
                                 <option value="">Select Ball Color</option>
                                 @foreach ($colors as $color)

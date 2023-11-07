@@ -74,8 +74,11 @@ class SuggestionController extends Controller
         // Check for any remaining balls
         $extraBalls = [];
         foreach ($remainingBalls as $color => $count) {
+
             if ($count > 0) {
-                $extraBalls[$color] = $count;
+                $color_name = Color::select('color_name')->where('id', $color)->first();
+                $color_name= $color_name->color_name;
+                $extraBalls[$color_name] = $count;
             }
         }
         // Clear suggested buckets to the database
@@ -100,24 +103,9 @@ class SuggestionController extends Controller
                 'count' => $count,
             ]);
         }
-        $data = [];
-        foreach ($suggestedBuckets as $key => $value) {
-            foreach ($value as $key2 => $value2) {
-                $data[$key2] = $value2;
-            }
-        }
-        // $sug = [];
-        // foreach ($suggestedBuckets as $bucketName => $bucketContents){
-        //     foreach ($bucketContents as $color => $count){
-        //     $color = Color::select('color_name')->where('id', $color)->first();
-        //     $bucket = Bucket::select('bucket_name')->where('id', $bucketName)->first();
-        //     // echo $bucket;
-        //     $sug[$bucketName] = ['color'=> $color, 'count' => $count ];
-        //      }
-
-        // }
-        // dd($sug);
-
-        return view('suggestions.result', compact('suggestedBuckets', 'extraBalls'));
+       
+        $res = SuggestedBucket::with(['ball', 'bucket'])->get();
+// dd($res->toArray());
+        return view('suggestions.result', compact('suggestedBuckets', 'extraBalls','res'));
     }
 }

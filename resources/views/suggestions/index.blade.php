@@ -1,6 +1,7 @@
 @extends('layouts.master')
 
 @section('main')
+
 <div class="container mt-20">
   
     <div class="row justify-content-center ">
@@ -27,24 +28,25 @@
     </div>
 </div>
 </div>
-@if (!empty($suggestedBuckets))
+
+{{-- @if (!empty($res))
 <div class="container row mt-20">
     <hr/>
     <div class="col-md-8">
     
-    @if (!empty($suggestedBuckets))
+    @if (!empty($res))
     
     <h2>Following are Suggested Buckets</h2>
 
    
         <table class="table table-bordered">
-            @foreach ($suggestedBuckets as $bucketName => $bucketContents)
+            @foreach ($res as $bucketName => $bucketContents)
             <tr>   
             <td>Bucket-{{ $bucketName }}</td>
                   <td>  
-                        @foreach ($bucketContents as $color => $count)
-                            {{ $count }} {{ $color }} Balls ,
-                        @endforeach
+                        
+                       {{$bucketContents->count}}     {{ $bucketContents->ball->color_name }} Balls ,
+                       
                    
                 </td>
             </tr>
@@ -67,5 +69,5 @@
     @endif
     </div>
 </div>
-@endif
+@endif --}}
 @endsection

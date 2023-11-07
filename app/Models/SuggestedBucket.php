@@ -19,5 +19,7 @@ class SuggestedBucket extends Model
     {
         return $this->belongsTo(Ball::class, 'ball_id');
     }
+
+   
     
 }

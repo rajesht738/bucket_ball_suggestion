@@ -42,9 +42,10 @@ class BallController extends Controller
         //  dd($request->toArray());
         $ball = new Ball();
         $ball->color_id = $request->color_id;
-       
-        $ball->ball_volume = $request->ball_volume;
-        $ball->save();
+         $color_name = Color::select('color_name')->where('id', $request->color_id)->first();
+         $ball->color_name = $color_name->color_name;
+         $ball->ball_volume = $request->ball_volume;
+         $ball->save();
         return back()->with('success', 'Ball Added Successfully');
     }
 
@@ -79,7 +80,8 @@ class BallController extends Controller
         $ball = Ball::where('id', $id)->first();
      
         $ball->color_id = $request->color_id;
-
+        $color_name = Color::select('color_name')->where('id', $request->color_id)->first();
+        $ball->color_name = $color_name->color_name;
         $ball->ball_volume = $request->ball_volume;
         $ball->save();
         return back()->with('success', 'Ball Updated Successfully!!!');
